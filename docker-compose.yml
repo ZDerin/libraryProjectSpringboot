@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  postgresql:
+    image: postgres
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: library
+      POSTGRES_USER: librarian
+      POSTGRES_PASSWORD: s3cr3t
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-db:/var/lib/postgresql
+
+volumes:
+  postgres-db:
