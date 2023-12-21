@@ -8,6 +8,26 @@ import java.util.regex.Pattern;
 
 public class ListenService {
 
+    // soll eine Liste übergeben, in der die am gewählten Standort verfügbaren Bucher
+    // mit ihren Daten (Link zum Cover, Titel, Autor) aufgezählt sind
+
+    //    private final NutzerService nutzerService;
+    private String standort;
+
+    // for-Schleife für alle Bücher auf Wunschliste
+    // Prüfung ob TID bereits in Datenbank hinterlegt (-> wandeleInTIDUm)
+    // -> istVerfuegbar
+    // hier entsteht ein Array mit verfügbaren Buch-Objekten
+    // Array wird an Methode (wo?) weitergegeben, sodass am Ende ein
+    // zweidimensionales Array mit [[Titel, Cover, Autor], [Titel, Cover, Autor], ... ]
+    // ans Frontend weitergegeben werden kann
+
+//    public String wandeleInTIDUm(Buch buch) {
+//        String tid = "";
+//        // Puppeteer Magic
+//        return tid;
+//    }
+
     public boolean istVerfuegbar(String gesuchteTID, String standort) throws IOException {
         String urlBasis = "https://www.buecherhallen.de/suchergebnis-detail/medium/";
         String urlBuch = urlBasis + gesuchteTID + ".html";
@@ -21,7 +41,7 @@ public class ListenService {
         }
         website = stringBuilder.toString();
 
-        Pattern pattern = Pattern.compile("<.*" + standort + "<[^>]*>[^V]*Verfügbar.*");
+        Pattern pattern = Pattern.compile("<.*location\">" + standort + "<[^>]*>[^VN]*Verfügbar.*");
         Matcher matcher = pattern.matcher(website);
 
         return matcher.find();

@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -31,7 +32,7 @@ class LibraryProjectApplicationTests {
 		}
 		website = stringBuilder.toString();
 
-		Pattern pattern = Pattern.compile("<.*" + standort + "<[^>]*>[^V]*Verfügbar.*");
+		Pattern pattern = Pattern.compile("<.*location\">" + standort + "<[^>]*>[^VN]*Verfügbar.*");
 		Matcher matcher = pattern.matcher(website);
 
 		return matcher.find();
@@ -41,6 +42,7 @@ class LibraryProjectApplicationTests {
 	void istVerfuegbar() throws IOException {
 		assertTrue(istVerfuegbar("T02325615X", "Zentralbibliothek"));
 		assertTrue(istVerfuegbar("T020329445", "Wandsbek"));
+		assertFalse(istVerfuegbar("T020329445", "Alstertal"));
 	}
 
 }
