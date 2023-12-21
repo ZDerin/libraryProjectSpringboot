@@ -26,11 +26,11 @@ public class Buch {
 
 
     public Buch(String isbn) {
-        this.isbn = isbn;
+        this.isbn = isbn;   // ggf. Bindestriche ignorieren
 //        this.titel = finde Titel und Autor über Amazon-API?;
 //        this.autor = ;
-        this.coverbild = "https://covers.openlibrary.org/b/isbn/" + isbn + ".jpg";
-        this.tid = buchService.
+        this.coverbild = buchService.erstelleCoverbildLink(isbn);
+        this.tid = buchService.wandeleInTIDUm(isbn);
     }
 
 //    public Buch(String titel, String autor) {
