@@ -22,7 +22,7 @@ public class Buch {
     @Column(name = "tid")
     private String tid;
 
-    private BuchService buchService;
+//    private BuchService buchService;
 
 
     public Buch(String isbn) {
@@ -30,7 +30,7 @@ public class Buch {
 //        this.titel = finde Titel und Autor über Amazon-API?;
 //        this.autor = ;
         this.coverbild = "https://covers.openlibrary.org/b/isbn/" + isbn + ".jpg";
-        this.tid = buchService.
+//        this.tid = buchService.
     }
 
 //    public Buch(String titel, String autor) {

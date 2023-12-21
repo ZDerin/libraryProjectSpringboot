@@ -1,5 +1,6 @@
 package libraryProjectGroup.libraryProject;
 
+import libraryProjectGroup.libraryProject.listen.ListenService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,10 +10,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+
 class LibraryProjectApplicationTests {
 
 	@Test
@@ -43,6 +43,12 @@ class LibraryProjectApplicationTests {
 		assertTrue(istVerfuegbar("T02325615X", "Zentralbibliothek"));
 		assertTrue(istVerfuegbar("T020329445", "Wandsbek"));
 		assertFalse(istVerfuegbar("T020329445", "Alstertal"));
+	}
+
+	@Test
+	void wandeleInTIDUm() throws IOException {
+		ListenService ls = new ListenService();
+		assertEquals(ls.wandeleInTIDUm("978-3-8490-4023-9"), "T020329445");
 	}
 
 }
