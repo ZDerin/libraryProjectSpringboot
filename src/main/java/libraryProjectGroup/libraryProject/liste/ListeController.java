@@ -1,15 +1,9 @@
-package libraryProjectGroup.libraryProject.listen;
+package libraryProjectGroup.libraryProject.liste;
 
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Controller
-public class ListenController {
+public class ListeController {
 
     // soll eine Liste übergeben, in der die am gewählten Standort verfügbaren Bucher
     // mit ihren Daten (Link zum Cover, Titel, Autor) aufgezählt sind
