@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @Service
-public class ListenService {
+public class ListeService {
 
     // soll eine Liste übergeben, in der die am gewählten Standort verfügbaren Bucher
     // mit ihren Daten (Link zum Cover, Titel, Autor) aufgezählt sind
@@ -17,7 +17,7 @@ public class ListenService {
     //    private final NutzerService nutzerService;
     private String standort;
 
-    public ListenService() {
+    public ListeService() {
     }
     // for-Schleife für alle Bücher auf Wunschliste
     // Prüfung ob TID bereits in Datenbank hinterlegt (-> wandeleInTIDUm)
@@ -38,7 +38,7 @@ public class ListenService {
         Scanner scanner = new Scanner(url.openStream());
         StringBuilder stringBuilder = new StringBuilder();
         while(scanner.hasNext()) {
-        stringBuilder.append(scanner.next());
+            stringBuilder.append(scanner.next());
         }
         website = stringBuilder.toString();
         Pattern pattern = Pattern.compile("/medium/([\\w]+)\\.html");

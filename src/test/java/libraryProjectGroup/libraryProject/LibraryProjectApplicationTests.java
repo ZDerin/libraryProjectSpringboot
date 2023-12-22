@@ -1,6 +1,6 @@
 package libraryProjectGroup.libraryProject;
 
-import libraryProjectGroup.libraryProject.listen.ListenService;
+import libraryProjectGroup.libraryProject.liste.ListeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -47,7 +47,7 @@ class LibraryProjectApplicationTests {
 
 	@Test
 	void wandeleInTIDUm() throws IOException {
-		ListenService ls = new ListenService();
+		ListeService ls = new ListeService();
 		assertEquals(ls.wandeleInTIDUm("978-3-8490-4023-9"), "T020329445");
 	}
 
