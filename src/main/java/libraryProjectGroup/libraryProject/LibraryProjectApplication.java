@@ -11,3 +11,5 @@ public class LibraryProjectApplication {
 	}
 
 }
+
+/*keytool -genkey -alias jwt-signing -keyalg RSA -keystore backend-auth.jks -keysize 2048*/
