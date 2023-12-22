@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 @Service
 public class BuchService {
@@ -23,8 +26,23 @@ public class BuchService {
         return buchRepository.save(buch);
     }
 
-    public String erstelleCoverbildLink(String isbn) {
-        return "https://covers.openlibrary.org/b/isbn/" + isbn + ".jpg";
+    public String erstelleCoverbildLink(String isbn) throws IOException {
+        String hugendubel = "https://www.hugendubel.info/annotstream/" + isbn + "/COP";
+        String openlibrary = "https://covers.openlibrary.org/b/isbn/" + isbn + ".jpg";
+//        String ekz = "https://cover.ekz.de/" + isbn;      // braucht Style Information
+
+        URL hugendubelURL = new URL(hugendubel);
+        Scanner hugendubelScanner = new Scanner(hugendubelURL.openStream());
+
+        if (Objects.equals(hugendubelScanner.next(), "<html style=\"height: 100%;\">")) {
+
+//        if (isbn.startsWith("9783")) {    // Alternative, die ggf. weniger zuverlässig, aber schneller wäre
+            return hugendubel;
+        } else {
+            return openlibrary;
+        }
+
+        // Default-Bild
     }
 
     public String wandeleInTIDUm(String isbn) throws IOException {
