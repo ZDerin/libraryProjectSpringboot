@@ -1,15 +1,20 @@
 package libraryProjectGroup.libraryProject.liste;
 
 import libraryProjectGroup.libraryProject.buch.Buch;
+import libraryProjectGroup.libraryProject.buch.BuchService;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @Service
 public class ListeService {
+    //ist es sinnvoll, eine Instanz des buchRepository als Klassenvariable zu deklarieren?
+    //muss so eine Instanz auch in den Konstruktor?
 
     // soll eine Liste übergeben, in der die am gewählten Standort verfügbaren Bucher
     // mit ihren Daten (Link zum Cover, Titel, Autor) aufgezählt sind
@@ -27,43 +32,19 @@ public class ListeService {
     // zweidimensionales Array mit [[Titel, Cover, Autor], [Titel, Cover, Autor], ... ]
     // ans Frontend weitergegeben werden kann
 
-    public String wandeleInTIDUm(String isbn) throws IOException {
-//        String isbn = Buch.getIsbn(); --> irgendwann muss die Methode wieder ein Buchobjekt bekommen
-        String tid = "";
+    public List<Buch> erstelleStandortListe(List<Buch> wunschliste, String standort) throws IOException {
+        List<Buch> standortListe = new ArrayList<>();
+        BuchService bs = new BuchService();
 
-        String suchUrl = "https://www.buecherhallen.de/katalog-suchergebnisse.html?suchbegriff=" + isbn;
-        URL url = new URL(suchUrl);
-        String website;
-
-        Scanner scanner = new Scanner(url.openStream());
-        StringBuilder stringBuilder = new StringBuilder();
-        while(scanner.hasNext()) {
-            stringBuilder.append(scanner.next());
+        for (Buch buch : wunschliste) {
+            if (buch.getTid() == null) {
+               buch.setTid(bs.wandeleInTIDUm(buch.getIsbn()));
+            }
+            if (bs.istVerfuegbar(buch.getTid(), standort)) {
+                standortListe.add(buch);
+            }
         }
-        website = stringBuilder.toString();
-        Pattern pattern = Pattern.compile("/medium/([\\w]+)\\.html");
-        Matcher matcher = pattern.matcher(website);
-        matcher.find();
-        tid = matcher.group(1);
-        return tid;
-    }
 
-    public boolean istVerfuegbar(String gesuchteTID, String standort) throws IOException {
-        String urlBasis = "https://www.buecherhallen.de/suchergebnis-detail/medium/";
-        String urlBuch = urlBasis + gesuchteTID + ".html";
-        URL url = new URL(urlBuch);
-        String website;
-
-        Scanner scanner = new Scanner(url.openStream());
-        StringBuilder stringBuilder = new StringBuilder();
-        while(scanner.hasNext()) {
-            stringBuilder.append(scanner.next());
-        }
-        website = stringBuilder.toString();
-
-        Pattern pattern = Pattern.compile("<.*location\">" + standort + "<[^>]*>[^VN]*Verfügbar.*");
-        Matcher matcher = pattern.matcher(website);
-
-        return matcher.find();
+        return standortListe;
     }
 }
