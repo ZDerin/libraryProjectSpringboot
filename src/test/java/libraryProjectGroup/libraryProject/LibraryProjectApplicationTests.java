@@ -1,5 +1,8 @@
 package libraryProjectGroup.libraryProject;
 
+import libraryProjectGroup.libraryProject.buch.BuchRepository;
+import libraryProjectGroup.libraryProject.buch.BuchService;
+import libraryProjectGroup.libraryProject.liste.ListeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,9 +12,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+
 class LibraryProjectApplicationTests {
 
 	@Test
@@ -31,7 +34,7 @@ class LibraryProjectApplicationTests {
 		}
 		website = stringBuilder.toString();
 
-		Pattern pattern = Pattern.compile("<.*" + standort + "<[^>]*>[^V]*Verfügbar.*");
+		Pattern pattern = Pattern.compile("<.*location\">" + standort + "<[^>]*>[^VN]*Verfügbar.*");
 		Matcher matcher = pattern.matcher(website);
 
 		return matcher.find();
@@ -41,6 +44,13 @@ class LibraryProjectApplicationTests {
 	void istVerfuegbar() throws IOException {
 		assertTrue(istVerfuegbar("T02325615X", "Zentralbibliothek"));
 		assertTrue(istVerfuegbar("T020329445", "Wandsbek"));
+		assertFalse(istVerfuegbar("T020329445", "Alstertal"));
 	}
+
+//	@Test
+//	void wandeleInTIDUm() throws IOException {
+//		BuchService bs = new BuchService();
+//		assertEquals(bs.wandeleInTIDUm("978-3-8490-4023-9"), "T020329445");
+//	}
 
 }
