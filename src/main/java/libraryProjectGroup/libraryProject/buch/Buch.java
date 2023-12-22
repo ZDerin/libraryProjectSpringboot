@@ -2,6 +2,8 @@ package libraryProjectGroup.libraryProject.buch;
 
 import jakarta.persistence.*;
 
+import java.io.IOException;
+
 @Entity
 @Table(name = "buch")
 public class Buch {
@@ -25,7 +27,7 @@ public class Buch {
     private BuchService buchService;
 
 
-    public Buch(String isbn) {
+    public Buch(String isbn) throws IOException {
         this.isbn = isbn;   // ggf. Bindestriche ignorieren
 //        this.titel = finde Titel und Autor über Amazon-API?;
 //        this.autor = ;
