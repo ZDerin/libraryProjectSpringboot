@@ -1,5 +1,6 @@
 package libraryProjectGroup.libraryProject.user;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,21 +25,31 @@ public class UserController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+
+    //register return type was UUID!
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UUID register(@RequestBody UserCreationDto dto) {
-        User createdUser = userRepository.save(
-                new User(
-                        UUID.randomUUID(),
-                        dto.getUsername(),
-                        bCryptPasswordEncoder.encode(dto.getPassword()),
-                        dto.getEmail(),
-                        Role.USER
-                )
-        );
-        return createdUser.getId();
+    public Object register(@RequestBody UserCreationDto dto) {
+        try {
+            User createdUser = userRepository.save(
+                    new User(
+                            UUID.randomUUID(),
+                            dto.getUsername(),
+                            bCryptPasswordEncoder.encode(dto.getPassword()),
+                            dto.getEmail(),
+                            Role.USER
+                    )
+            );
+            return createdUser.getId();
+        } catch (DataIntegrityViolationException ex) {
+            if(ex.getMessage().contains("nutzer_username_key")){
+                return ex.getMessage();
+            } else if(ex.getMessage().contains("nutzer_email_key")){
+                return ex.getMessage();
+            }
+        }
+        return null;
     }
-
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping()

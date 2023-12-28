@@ -1,5 +1,5 @@
 package libraryProjectGroup.libraryProject.liste;
-
+/*
 import libraryProjectGroup.libraryProject.buch.Buch;
 import libraryProjectGroup.libraryProject.buch.BuchService;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ public class ListeService {
     //    private final NutzerService nutzerService;
     private String standort;
 
+
     public ListeService() {
     }
     // for-Schleife für alle Bücher auf Wunschliste
@@ -34,7 +35,7 @@ public class ListeService {
 
     public List<Buch> erstelleStandortListe(List<Buch> wunschliste, String standort) throws IOException {
         List<Buch> standortListe = new ArrayList<>();
-        BuchService bs = new BuchService();
+        //BuchService bs = new BuchService();
 
         for (Buch buch : wunschliste) {
             if (buch.getTid() == null) {
@@ -48,3 +49,4 @@ public class ListeService {
         return standortListe;
     }
 }
+*/

@@ -6,7 +6,7 @@ import java.util.StringJoiner;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "nutzer")
 public class User {
 
     @Id

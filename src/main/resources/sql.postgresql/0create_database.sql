@@ -17,10 +17,11 @@ CREATE TABLE buch
 -- Verfügbarkeit?
 );
 
+/*
 ALTER TABLE buch
     ADD CONSTRAINT fk_buch_nutzer
         FOREIGN KEY (nutzer_id)
             REFERENCES nutzer (id);
 
-
+*/
 
