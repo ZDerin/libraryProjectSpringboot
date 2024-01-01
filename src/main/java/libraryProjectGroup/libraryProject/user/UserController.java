@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -65,6 +68,8 @@ public class UserController {
     public void deleteUser(@PathVariable UUID id) {
         userRepository.deleteById(id);
     }
+
+
 
 //    @PreAuthorize("hasAuthority('ROLE_SELLER')")
 //    @PutMapping()
