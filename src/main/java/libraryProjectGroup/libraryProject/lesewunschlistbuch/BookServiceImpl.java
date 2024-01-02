@@ -1,11 +1,19 @@
 package libraryProjectGroup.libraryProject.lesewunschlistbuch;
 
+import libraryProjectGroup.libraryProject.buch.Buch;
 import libraryProjectGroup.libraryProject.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -13,6 +21,73 @@ public class BookServiceImpl implements BookService {
     @Autowired
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
+    }
+
+    @Override
+    public Book buchSpeichern(Book buch) {
+        return bookRepository.save(buch);
+    }
+
+    @Override
+    public String erstelleCoverbildLink(String isbn) throws IOException {
+        String hugendubel = "https://www.hugendubel.info/annotstream/" + isbn + "/COP";
+        String openlibrary = "https://covers.openlibrary.org/b/isbn/" + isbn + ".jpg";
+//        String ekz = "https://cover.ekz.de/" + isbn;      // braucht Style Information
+
+        URL hugendubelURL = new URL(hugendubel);
+        Scanner hugendubelScanner = new Scanner(hugendubelURL.openStream());
+
+        if (Objects.equals(hugendubelScanner.next(), "<html style=\"height: 100%;\">")) {
+
+//        if (isbn.startsWith("9783")) {    // Alternative, die ggf. weniger zuverlässig, aber schneller wäre
+            return hugendubel;
+        } else {
+            return openlibrary;
+        }
+
+        // Default-Bild
+    }
+
+    @Override
+    public String wandeleInTIDUm(String isbn) throws IOException {
+        String tid = "";
+
+        String suchUrl = "https://www.buecherhallen.de/katalog-suchergebnisse.html?suchbegriff=" + isbn;
+        URL url = new URL(suchUrl);
+        String website;
+
+        Scanner scanner = new Scanner(url.openStream());
+        StringBuilder stringBuilder = new StringBuilder();
+        while(scanner.hasNext()) {
+            stringBuilder.append(scanner.next());
+        }
+        website = stringBuilder.toString();
+        Pattern pattern = Pattern.compile("/medium/([\\w]+)\\.html");
+        Matcher matcher = pattern.matcher(website);
+        matcher.find();
+        tid = matcher.group(1);
+        return tid;
+    }
+
+
+    @Override
+    public boolean istVerfuegbar(String gesuchteTID, String standort) throws IOException {
+        String urlBasis = "https://www.buecherhallen.de/suchergebnis-detail/medium/";
+        String urlBuch = urlBasis + gesuchteTID + ".html";
+        URL url = new URL(urlBuch);
+        String website;
+
+        Scanner scanner = new Scanner(url.openStream());
+        StringBuilder stringBuilder = new StringBuilder();
+        while(scanner.hasNext()) {
+            stringBuilder.append(scanner.next());
+        }
+        website = stringBuilder.toString();
+
+        Pattern pattern = Pattern.compile("<.*location\">" + standort + "<[^>]*>[^VN]*Verfügbar.*");
+        Matcher matcher = pattern.matcher(website);
+
+        return matcher.find();
     }
 
 
@@ -53,15 +128,21 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void saveBookToReadingWishlist(BookCreationDto bookOfUser, User user) {
+    public void saveBookToReadingWishlist(BookCreationDto dto, User user) {
         Book book = new Book();
         book.setUser(user);
-        book.setIsbn(bookOfUser.getIsbn());
-        book.setTitle(bookOfUser.getTitle());
-        book.setAuthor(bookOfUser.getAuthor());
+        book.setIsbn(dto.getIsbn());
+        book.setTitle(dto.getTitle());
+        book.setAuthor(dto.getAuthor());
 
         if(!findByIsbnAndUser(book)){
             bookRepository.save(book);
+            System.out.println("in save book stage");
         }
+    }
+
+    @Override
+    public List<Book> findAll(User user) {
+        return bookRepository.findAll().stream().filter(book -> book.getUser() == user).toList();
     }
 }

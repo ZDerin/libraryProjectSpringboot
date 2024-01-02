@@ -31,8 +31,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Object register(@RequestBody UserCreationDto dto) {
-        try {
+    public UUID register(@RequestBody UserCreationDto dto) {
+        //try {
             User createdUser = userRepository.save(
                     new User(
                             UUID.randomUUID(),
@@ -43,14 +43,8 @@ public class UserController {
                     )
             );
             return createdUser.getId();
-        } catch (DataIntegrityViolationException ex) {
-            if(ex.getMessage().contains("nutzer_username_key")){
-                return ex.getMessage();
-            } else if(ex.getMessage().contains("nutzer_email_key")){
-                return ex.getMessage();
-            }
-        }
-        return null;
+        //}
+        //return null;
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

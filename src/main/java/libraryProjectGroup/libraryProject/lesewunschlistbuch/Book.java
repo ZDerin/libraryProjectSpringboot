@@ -4,8 +4,10 @@ package libraryProjectGroup.libraryProject.lesewunschlistbuch;
 import jakarta.persistence.*;
 import libraryProjectGroup.libraryProject.user.User;
 
+import java.io.IOException;
+
 @Entity
-@Table(name="lesewunschlistbuch")
+@Table(name="buch")
 public class Book {
 
     @Id
@@ -22,9 +24,40 @@ public class Book {
     @Column(name="author")
     private String author;
 
+    @Column(name = "coverbild")
+    private String coverbild;
+
+    @Column(name = "tid")
+    private String tid;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+
+    public Book(){
+
+    }
+
+    public Book(String isbn) throws IOException {
+        this.isbn = isbn;   // ggf. Bindestriche ignorieren
+//        this.titel = finde Titel und Autor über Amazon-API?;
+//        this.autor = ;
+        //this.coverbild = buchService.erstelleCoverbildLink(isbn);
+        //this.tid = buchService.wandeleInTIDUm(isbn);
+    }
+
+//    public Buch(String titel, String autor) {
+//        this.titel = titel;
+//        this.autor = autor;
+//        this.isbn = finde ISBN über Amazon-API?
+//    }
+
+    public Book(String isbn, String title, String author, String coverbild) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.coverbild = coverbild;
+    }
 
     public void setUser(User user) {
         this.user = user;
@@ -57,6 +90,20 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
+
+    public String getCoverbild() {
+        return coverbild;
+    }
+
+
 
 
 }
