@@ -103,7 +103,7 @@ public class Book {
         return coverbild;
     }
 
-
-
-
+    public void setCoverbild(String coverbild) {
+        this.coverbild = coverbild;
+    }
 }

@@ -3,6 +3,9 @@ package libraryProjectGroup.libraryProject.liste;
 import libraryProjectGroup.libraryProject.buch.Buch;
 import libraryProjectGroup.libraryProject.buch.BuchRepository;
 import libraryProjectGroup.libraryProject.buch.BuchService;
+import libraryProjectGroup.libraryProject.lesewunschlistbuch.Book;
+import libraryProjectGroup.libraryProject.lesewunschlistbuch.BookRepository;
+import libraryProjectGroup.libraryProject.lesewunschlistbuch.BookServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,7 +19,8 @@ import java.util.regex.Pattern;
 public class ListeService {
     //ist es sinnvoll, eine Instanz des buchRepository als Klassenvariable zu deklarieren?
     //muss so eine Instanz auch in den Konstruktor?
-    private final BuchRepository buchRepository;
+    private final BookRepository bookRepository;
+    private final BookServiceImpl bookService;
 
     // soll eine Liste übergeben, in der die am gewählten Standort verfügbaren Bucher
     // mit ihren Daten (Link zum Cover, Titel, Autor) aufgezählt sind
@@ -24,8 +28,9 @@ public class ListeService {
     //    private final NutzerService nutzerService;
     private String standort;
 
-    public ListeService(BuchRepository buchRepository) {
-        this.buchRepository = buchRepository;
+    public ListeService(BookRepository bookRepository, BookServiceImpl bookService) {
+        this.bookRepository = bookRepository;
+        this.bookService = bookService;
     }
     // for-Schleife für alle Bücher auf Wunschliste
     // Prüfung ob TID bereits in Datenbank hinterlegt (-> wandeleInTIDUm)
@@ -35,15 +40,14 @@ public class ListeService {
     // zweidimensionales Array mit [[Titel, Cover, Autor], [Titel, Cover, Autor], ... ]
     // ans Frontend weitergegeben werden kann
 
-    public List<Buch> erstelleStandortListe(List<Buch> wunschliste, String standort) throws IOException {
-        List<Buch> standortListe = new ArrayList<>();
-        BuchService bs = new BuchService(buchRepository);
+    public List<Book> erstelleStandortListe(List<Book> wunschliste, String standort) throws IOException {
+        List<Book> standortListe = new ArrayList<>();
 
-        for (Buch buch : wunschliste) {
+        for (Book buch : wunschliste) {
             if (buch.getTid() == null) {
-               buch.setTid(bs.wandeleInTIDUm(buch.getIsbn()));
+               buch.setTid(bookService.wandeleInTIDUm(buch.getIsbn()));
             }
-            if (bs.istVerfuegbar(buch.getTid(), standort)) {
+            if (bookService.istVerfuegbar(buch.getTid(), standort)) {
                 standortListe.add(buch);
             }
         }

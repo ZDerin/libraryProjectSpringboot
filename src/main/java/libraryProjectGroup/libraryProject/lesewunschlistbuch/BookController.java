@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -33,7 +34,8 @@ public class BookController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping(value= "/readingListImport")
     @ResponseStatus(HttpStatus.CREATED)
-    public void uploadReadingWishlist(@RequestBody String[] books, Principal principal){
+    public void uploadReadingWishlist(@RequestBody String[] books, Principal principal) throws IOException {
+        System.out.println("in uploadReadingWishlist Func in Controller");
         User user = userRepository.findByUsername(principal.getName());
         bookServiceImpl.extractAndSaveBookData(books, user);
     }
