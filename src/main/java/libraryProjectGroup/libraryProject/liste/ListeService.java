@@ -1,6 +1,7 @@
 package libraryProjectGroup.libraryProject.liste;
-/*
+
 import libraryProjectGroup.libraryProject.buch.Buch;
+import libraryProjectGroup.libraryProject.buch.BuchRepository;
 import libraryProjectGroup.libraryProject.buch.BuchService;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 public class ListeService {
     //ist es sinnvoll, eine Instanz des buchRepository als Klassenvariable zu deklarieren?
     //muss so eine Instanz auch in den Konstruktor?
+    private final BuchRepository buchRepository;
 
     // soll eine Liste übergeben, in der die am gewählten Standort verfügbaren Bucher
     // mit ihren Daten (Link zum Cover, Titel, Autor) aufgezählt sind
@@ -22,8 +24,8 @@ public class ListeService {
     //    private final NutzerService nutzerService;
     private String standort;
 
-
-    public ListeService() {
+    public ListeService(BuchRepository buchRepository) {
+        this.buchRepository = buchRepository;
     }
     // for-Schleife für alle Bücher auf Wunschliste
     // Prüfung ob TID bereits in Datenbank hinterlegt (-> wandeleInTIDUm)
@@ -35,7 +37,7 @@ public class ListeService {
 
     public List<Buch> erstelleStandortListe(List<Buch> wunschliste, String standort) throws IOException {
         List<Buch> standortListe = new ArrayList<>();
-        //BuchService bs = new BuchService();
+        BuchService bs = new BuchService(buchRepository);
 
         for (Buch buch : wunschliste) {
             if (buch.getTid() == null) {
@@ -49,4 +51,3 @@ public class ListeService {
         return standortListe;
     }
 }
-*/
