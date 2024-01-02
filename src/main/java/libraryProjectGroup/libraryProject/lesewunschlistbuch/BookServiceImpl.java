@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
                 isbn13 = isbnMatch.substring(indexOfFirst9, indexOfFirst9 + 13);
                 book.setIsbn(isbn13);
             } else {
-                book.setIsbn("9780000000000"); // oder andere Lösung?
+                book.setIsbn("9780000000000"); // find sie!!!
             }
             if(!findByIsbnAndUser(book)){
                 bookRepository.save(book);

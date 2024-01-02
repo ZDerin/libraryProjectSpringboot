@@ -29,7 +29,6 @@ public class UserController {
     }
 
 
-    //register return type was UUID!
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Object register(@RequestBody UserCreationDto dto) {

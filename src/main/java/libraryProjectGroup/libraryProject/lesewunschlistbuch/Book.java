@@ -23,7 +23,7 @@ public class Book {
     private String author;
 
     @ManyToOne
-    @JoinColumn(name="user_id") // username better???????????
+    @JoinColumn(name="user_id")
     private User user;
 
     public void setUser(User user) {
