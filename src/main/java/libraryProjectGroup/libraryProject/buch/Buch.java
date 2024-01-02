@@ -3,7 +3,7 @@ package libraryProjectGroup.libraryProject.buch;
 import jakarta.persistence.*;
 
 import java.io.IOException;
-
+/*
 @Entity
 @Table(name = "buch")
 public class Buch {
@@ -101,3 +101,4 @@ public class Buch {
         return id;
     }
 }
+*/
