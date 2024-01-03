@@ -34,7 +34,7 @@ public class BookController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping(value= "/readingListImport")
     @ResponseStatus(HttpStatus.CREATED)
-    public void uploadReadingWishlist(@RequestBody String[] books, Principal principal) throws IOException {
+    public void uploadReadingWishlist(@RequestBody String[] books, Principal principal) {
         System.out.println("in uploadReadingWishlist Func in Controller");
         User user = userRepository.findByUsername(principal.getName());
         bookServiceImpl.extractAndSaveBookData(books, user);
@@ -43,17 +43,10 @@ public class BookController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping(value= "/addBookToRead")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addBookToWishlist(@RequestBody BookCreationDto book, Principal principal){
+    public void addBookToWishlist(@RequestBody BookCreationDto book, Principal principal) {
         System.out.println("in addBookToWishList");
         User user = userRepository.findByUsername(principal.getName());
         bookServiceImpl.saveBookToReadingWishlist(book, user);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    @PostMapping(value= "/showBooksToRead")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void showBooksToRead(Principal principal){
-        User user = userRepository.findByUsername(principal.getName());
-        List<Book> readingWishlist = bookServiceImpl.findAll(user);
-    }
 }

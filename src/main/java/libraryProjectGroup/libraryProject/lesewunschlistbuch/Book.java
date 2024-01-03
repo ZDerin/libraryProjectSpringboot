@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import libraryProjectGroup.libraryProject.user.User;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 @Table(name="buch")
@@ -15,8 +19,11 @@ public class Book {
     @Column(name = "id")
     private int id;
 
-    @Column(name= "isbn")
-    private String isbn;
+
+    @ElementCollection
+    @CollectionTable(name = "book_isbns", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "book_isbn")
+    private Collection<String> isbns = new HashSet<>();
 
     @Column(name="title")
     private String title;
@@ -27,8 +34,10 @@ public class Book {
     @Column(name = "coverbild")
     private String coverbild;
 
-    @Column(name = "tid")
-    private String tid;
+    @ElementCollection
+    @CollectionTable(name = "book_tids", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "book_tid")
+    private Collection<String> tids;
 
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -38,8 +47,8 @@ public class Book {
 
     }
 
-    public Book(String isbn) throws IOException {
-        this.isbn = isbn;   // ggf. Bindestriche ignorieren
+    public Book(Collection<String> isbns) throws IOException {
+        this.isbns = isbns;   // ggf. Bindestriche ignorieren
 //        this.titel = finde Titel und Autor über Amazon-API?;
 //        this.autor = ;
         //this.coverbild = buchService.erstelleCoverbildLink(isbn);
@@ -52,8 +61,8 @@ public class Book {
 //        this.isbn = finde ISBN über Amazon-API?
 //    }
 
-    public Book(String isbn, String title, String author, String coverbild) {
-        this.isbn = isbn;
+    public Book(Collection<String> isbns, String title, String author, String coverbild) {
+        this.isbns = isbns;
         this.title = title;
         this.author = author;
         this.coverbild = coverbild;
@@ -67,12 +76,12 @@ public class Book {
         return user;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public Collection<String> getIsbns() {
+        return isbns;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setIsbns(Collection<String> isbn) {
+        this.isbns = isbn;
     }
 
     public String getTitle() {
@@ -91,12 +100,12 @@ public class Book {
         this.author = author;
     }
 
-    public String getTid() {
-        return tid;
+    public Collection<String> getTids() {
+        return tids;
     }
 
-    public void setTid(String tid) {
-        this.tid = tid;
+    public void setTids(Collection<String> tid) {
+        this.tids = tid;
     }
 
     public String getCoverbild() {
