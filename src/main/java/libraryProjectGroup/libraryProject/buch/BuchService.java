@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 @Service
 public class BuchService {
 
-    private final BuchRepository buchRepository;
+   private final BuchRepository buchRepository;
 
     @Autowired
     public BuchService(BuchRepository buchRepository) {

@@ -24,15 +24,15 @@ public class Buch {
     @Column(name = "tid")
     private String tid;
 
-    private BuchService buchService;
+   // private BuchService buchService;
 
 
     public Buch(String isbn) throws IOException {
         this.isbn = isbn;   // ggf. Bindestriche ignorieren
 //        this.titel = finde Titel und Autor über Amazon-API?;
 //        this.autor = ;
-        this.coverbild = buchService.erstelleCoverbildLink(isbn);
-        this.tid = buchService.wandeleInTIDUm(isbn);
+        //this.coverbild = buchService.erstelleCoverbildLink(isbn);
+        //this.tid = buchService.wandeleInTIDUm(isbn);
     }
 
 //    public Buch(String titel, String autor) {
