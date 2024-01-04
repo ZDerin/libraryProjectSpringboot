@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -40,7 +41,17 @@ public class ListeController {
         User user = userRepository.findByUsername(principal.getName());
         List<Book> readingWishlist = bookServiceImpl.findAll(user);
         List<BookFrontendDto> gefilterteWunschliste =  listeService.erstelleStandortListe(readingWishlist, "Zentralbibliothek");
-        System.out.println(gefilterteWunschliste);
+
         return gefilterteWunschliste;
     }
+
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping(value= "/showAllBooks")
+    public List<BookFrontendDto> showAllBooks(Principal principal){
+        User user = userRepository.findByUsername(principal.getName());
+        List<Book> readingWishlist = bookServiceImpl.findAll(user);
+        System.out.println(listeService.findAllAsDTO(readingWishlist).toString());
+        return listeService.findAllAsDTO(readingWishlist);
+    }
+
 }

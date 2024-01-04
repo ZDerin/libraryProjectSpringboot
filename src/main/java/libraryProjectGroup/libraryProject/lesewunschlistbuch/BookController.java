@@ -5,11 +5,11 @@ import libraryProjectGroup.libraryProject.user.User;
 import libraryProjectGroup.libraryProject.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -31,6 +31,8 @@ public class BookController {
         return bookServiceImpl.buchSpeichern(buch);
     }
 
+
+    /*
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping(value= "/readingListImport")
     @ResponseStatus(HttpStatus.CREATED)
@@ -38,6 +40,14 @@ public class BookController {
         System.out.println("in uploadReadingWishlist Func in Controller");
         User user = userRepository.findByUsername(principal.getName());
         bookServiceImpl.extractAndSaveBookData(books, user);
+    }*/
+
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PostMapping(value= "/readingListImport")
+    public void uploadReadingWishlist(@RequestPart MultipartFile file, Principal principal) {
+        System.out.println(file.getContentType());
+        User user = userRepository.findByUsername(principal.getName());
+        bookServiceImpl.extractAndSaveBookData(file, user);
     }
 
     @PreAuthorize("hasAuthority('ROLE_USER')")

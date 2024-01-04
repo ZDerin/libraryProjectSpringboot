@@ -65,5 +65,18 @@ public class ListeService {
 
         return standortListe;
     }
+
+    public List<BookFrontendDto> findAllAsDTO(List<Book> readingWishlist){
+        List<BookFrontendDto> allBooksAsDto = new ArrayList<>();
+
+        for (Book book : readingWishlist) {
+            BookFrontendDto dto = new BookFrontendDto();
+            dto.setTitle(book.getTitle());
+            dto.setAuthor(book.getAuthor());
+            dto.setCoverbild(book.getCoverbild());
+            allBooksAsDto.add(dto);
+        }
+        return allBooksAsDto;
+    }
 }
 
