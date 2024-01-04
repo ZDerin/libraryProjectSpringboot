@@ -4,11 +4,12 @@ import libraryProjectGroup.libraryProject.user.User;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public interface BookService {
 
     Book buchSpeichern(Book buch);
-    String erstelleCoverbildLink(String isbn) throws IOException;
+    String erstelleCoverbildLink(Set<String> isbnListe) throws IOException;
 
     String wandeleInTIDUm(String isbn) throws IOException;
 

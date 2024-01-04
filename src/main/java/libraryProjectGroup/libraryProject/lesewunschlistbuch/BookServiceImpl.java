@@ -35,23 +35,76 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String erstelleCoverbildLink(String isbn) {
-        String hugendubel = "https://www.hugendubel.info/annotstream/" + isbn + "/COP";
-        String openlibrary = "https://covers.openlibrary.org/b/isbn/" + isbn + ".jpg";
-//        String ekz = "https://cover.ekz.de/" + isbn;      // braucht Style Information
-/*
-        URL hugendubelURL = new URL(hugendubel);
-        Scanner hugendubelScanner = new Scanner(hugendubelURL.openStream());
+//    public String erstelleCoverbildLink(Set<String> isbnListe) {
+//
+//        String result = "https://images.thalia.media/00/-/43a368e2355441ca9709657b2c6486b3/hardcover-notizbuch-urban-glam-ultra-liniert-paperblanks.jpeg";
+//
+//        try {
+//            for (String isbn : isbnListe ) {
+//                String hugendubel = "https://www.hugendubel.info/annotstream/" + isbn + "/COP";
+//                URL hugendubelURL = new URL(hugendubel);
+////                Scanner hugendubelScanner = new Scanner(hugendubelURL.openStream());
+//
+////                if (Objects.equals(hugendubelScanner.next(), "<html style=\"height: 100%;\">")) {
+////                    result = hugendubel;
+////                    break;
+////                }
+//                HttpURLConnection connection = (HttpURLConnection) hugendubelURL.openConnection();
+//                connection.setRequestMethod("GET");
+//
+//                // Überprüfen des HTTP-Statuscode
+//                int statusCode = connection.getResponseCode();
+//                if (statusCode == 200) {
+//                    result = hugendubel; // Erfolgreiche Anfrage
+//                }
+//            }
+//            // respektive String-Pfad zu Default-Cover-Datei
+//        }
+//        catch (Exception e){
+//            System.out.println(e);
+//        }
+//        return result;
+//    }
 
-        if (Objects.equals(hugendubelScanner.next(), "<html style=\"height: 100%;\">")) {
+//    public String erstelleCoverbildLink(Set<String> isbnListe) {
+//        String result = "https://images.thalia.media/00/-/43a368e2355441ca9709657b2c6486b3/hardcover-notizbuch-urban-glam-ultra-liniert-paperblanks.jpeg";
+//        try {
+//            for (String isbn : isbnListe ) {
+//                String hugendubel = "https://www.hugendubel.info/annotstream/" + isbn + "/COP";
+//                URL hugendubelURL = new URL(hugendubel);
+//                Scanner hugendubelScanner = new Scanner(hugendubelURL.openStream());
+//                if (Objects.equals(hugendubelScanner.next(), "<html style=\"height: 100%;\">")) {
+//                    result = hugendubel;
+//                    break;
+//                }
+//            }
+//            // respektive String-Pfad zu Default-Cover-Datei
+//        }
+//        catch (Exception e){
+//            System.out.println(e);
+//        }
+//        return result;
+//    }
+    public String erstelleCoverbildLink(Set<String> isbnListe) {
+        String hugendubel = null;
+        String defaultURL = "https://images.thalia.media/00/-/43a368e2355441ca9709657b2c6486b3/hardcover-notizbuch-urban-glam-ultra-liniert-paperblanks.jpeg";
 
-//        if (isbn.startsWith("9783")) {    // Alternative, die ggf. weniger zuverlässig, aber schneller wäre
-            return hugendubel;
-        } else {
-            return openlibrary;
-        }*/
-        return "https://openlibrary.org/works/OL82563W/Harry_Potter_and_the_Philosopher%27s_Stone?edition=key%3A/books/OL39793700M";
-        // Default-Bild
+        for (String isbn : isbnListe) {
+            hugendubel = "https://www.hugendubel.info/annotstream/" + isbn + "/COP";
+            try {
+                URL url = new URL(hugendubel);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("HEAD");
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    return hugendubel;
+                }
+                connection.disconnect();
+            } catch (Exception e) {
+                System.out.println("Fehler beim Überprüfen der URL: " + e.getMessage());
+            }
+        }
+        return defaultURL;
     }
 
     @Override
@@ -135,7 +188,6 @@ public class BookServiceImpl implements BookService {
                 System.out.println(isbnMatchList.get(0));
                 isbn13VonCsv = isbnMatch.substring(indexOfFirst9ofFirstIsbn);
                 isbnListe.add(isbn13VonCsv);
-                book.setCoverbild(erstelleCoverbildLink(isbn13VonCsv));
             }
 
             //findet die ISBNs von OpenLibrary über Author und Title
@@ -144,6 +196,7 @@ public class BookServiceImpl implements BookService {
             // erzeuge TIds
             Set<String> tidsListe = generateTids(isbnListe);
 
+            book.setCoverbild(erstelleCoverbildLink(isbnListe));
             book.setIsbns(isbnListe);
             book.setTids(tidsListe);
             book.setTitle(eachBookInArr[1]);
