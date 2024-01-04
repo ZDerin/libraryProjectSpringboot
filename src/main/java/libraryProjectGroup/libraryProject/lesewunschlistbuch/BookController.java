@@ -30,18 +30,7 @@ public class BookController {
     public Book speichereBuch(@RequestBody Book buch) {
         return bookServiceImpl.buchSpeichern(buch);
     }
-
-
-    /*
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    @PostMapping(value= "/readingListImport")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void uploadReadingWishlist(@RequestBody String[] books, Principal principal) {
-        System.out.println("in uploadReadingWishlist Func in Controller");
-        User user = userRepository.findByUsername(principal.getName());
-        bookServiceImpl.extractAndSaveBookData(books, user);
-    }*/
-
+    
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping(value= "/readingListImport")
     public void uploadReadingWishlist(@RequestPart MultipartFile file, Principal principal) {
@@ -58,5 +47,4 @@ public class BookController {
         User user = userRepository.findByUsername(principal.getName());
         bookServiceImpl.saveBookToReadingWishlist(book, user);
     }
-
 }
