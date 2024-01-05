@@ -8,6 +8,17 @@ public class BookFrontendDto {
 
     private int bookId;
 
+    private String standortLink;
+
+    public String getStandortLink() {
+        return standortLink;
+    }
+
+    public void setStandortLink(String standortLink) {
+        this.standortLink = standortLink;
+    }
+
+
     public String getCoverbild() {
         return coverbild;
     }

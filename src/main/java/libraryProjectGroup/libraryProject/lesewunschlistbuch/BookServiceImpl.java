@@ -124,38 +124,6 @@ public class BookServiceImpl implements BookService {
         return null;
     }
 
-
-    public String findeRegalStandort(String tid) {
-        String regalStandort = "";
-
-        String website = scanneDetailseite(tid);
-
-        Pattern kategoriePattern = Pattern.compile(">[\\w\\sÄÖÜ]*&gt; [\\wäöü]*<");
-        assert website != null;
-        Matcher kategorieMatcher = kategoriePattern.matcher(website);
-        if (kategorieMatcher.find()) {
-            String rawKategorie = kategorieMatcher.group(1);
-            Pattern einzelKategoriePattern = Pattern.compile("[\\w\\sÄÖÜäöü]+");
-            Matcher einzelKategorieMatcher = einzelKategoriePattern.matcher(rawKategorie);
-            if (einzelKategorieMatcher.find()) {
-                regalStandort = einzelKategorieMatcher.group(1) + "-" + einzelKategorieMatcher.group(3);
-            }
-        }
-
-        Pattern signaturPattern = Pattern.compile("item-value\">[\\w\\säöü]*</span>\\s*</li>\\s*</ul>");
-        Matcher signaturMatcher = signaturPattern.matcher(website);
-        if (signaturMatcher.find()) {
-            String rawSignatur = signaturMatcher.group(1);
-            Pattern extractSignaturPattern = Pattern.compile("[\\w\\säöü]+");
-            Matcher extractSignaturMatcher = extractSignaturPattern.matcher(rawSignatur);
-            if (extractSignaturMatcher.find()) {
-                regalStandort = regalStandort + "\t" + extractSignaturMatcher.group(1);
-            }
-        }
-
-        return regalStandort;
-    }
-
     @Override
     public String wandeleInTIDUm(String isbn) {
         try{
