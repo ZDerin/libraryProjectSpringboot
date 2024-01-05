@@ -41,7 +41,6 @@ public class ListeController {
         User user = userRepository.findByUsername(principal.getName());
         List<Book> readingWishlist = bookServiceImpl.findAll(user);
         List<BookFrontendDto> gefilterteWunschliste =  listeService.erstelleStandortListe(readingWishlist, "Zentralbibliothek");
-
         return gefilterteWunschliste;
     }
 

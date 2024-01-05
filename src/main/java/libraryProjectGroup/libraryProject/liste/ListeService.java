@@ -56,6 +56,7 @@ public class ListeService {
                         dto.setTitle(buch.getTitle());
                         dto.setAuthor(buch.getAuthor());
                         dto.setCoverbild(buch.getCoverbild());
+                        dto.setBookId(buch.getId());
                         standortListe.add(dto);
                         break;
                     }
@@ -74,6 +75,7 @@ public class ListeService {
             dto.setTitle(book.getTitle());
             dto.setAuthor(book.getAuthor());
             dto.setCoverbild(book.getCoverbild());
+            dto.setBookId(book.getId());
             allBooksAsDto.add(dto);
         }
         return allBooksAsDto;

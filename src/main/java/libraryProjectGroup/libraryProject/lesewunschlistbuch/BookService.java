@@ -22,6 +22,8 @@ public interface BookService {
     List<Book> findAll(User user);
 
     List<String> convertCsvToStr(MultipartFile file);
+    void removeTheBook(BookRemoveDto bookIdObj, User user);
+
 
 
 }

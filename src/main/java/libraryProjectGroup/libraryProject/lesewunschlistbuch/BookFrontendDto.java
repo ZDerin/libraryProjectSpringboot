@@ -6,6 +6,8 @@ public class BookFrontendDto {
     private String title;
     private String author;
 
+    private int bookId;
+
     public String getCoverbild() {
         return coverbild;
     }
@@ -28,5 +30,13 @@ public class BookFrontendDto {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 }
