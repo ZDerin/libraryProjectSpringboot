@@ -1,4 +1,4 @@
-package libraryProjectGroup.libraryProject;
+package libraryProjectGroup.libraryProject.standorte;
 
 public class Standorte {
 
