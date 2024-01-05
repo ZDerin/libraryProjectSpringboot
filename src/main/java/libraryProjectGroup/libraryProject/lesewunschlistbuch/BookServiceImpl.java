@@ -1,6 +1,5 @@
 package libraryProjectGroup.libraryProject.lesewunschlistbuch;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import libraryProjectGroup.libraryProject.user.User;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -8,6 +7,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -168,8 +168,11 @@ public class BookServiceImpl implements BookService {
         return !booksWithIsbnInRepo.isEmpty();
     }
     @Override
-    public void extractAndSaveBookData(String[] books, User user) {
-        for(String str : books){
+    public void extractAndSaveBookData(MultipartFile file, User user) {
+        List<String> listOfBookList = convertCsvToStr(file);
+        System.out.println(listOfBookList);
+
+        for(String str : listOfBookList){
             Book book = new Book();
             book.setUser(user);
 
@@ -232,6 +235,27 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAll(User user) {
         return bookRepository.findAll().stream().filter(book -> book.getUser() == user).toList();
+    }
+   @Override
+    public List<String> convertCsvToStr(MultipartFile file) {
+        List<String> listOfBookList = new ArrayList<>();
+        try  {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+            List<List<String>> data = reader.lines()
+                    .skip(1)
+                    .map(line -> List.of(line.split("\\s*\n\\s*")))
+                    .toList();
+
+            for(List<String> s : data){
+                listOfBookList.addAll(s);
+            }
+            return listOfBookList;
+        } catch (IOException e) {
+            System.out.println("in extractAndSaveBookData");
+            System.out.println(e);
+           // e.printStackTrace(); // Handle the exception according to your needs
+        }
+        return null;
     }
 
     private static String fetchDataFromUrl(String urlString) {
