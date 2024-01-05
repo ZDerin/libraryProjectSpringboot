@@ -30,7 +30,7 @@ public class BookController {
     public Book speichereBuch(@RequestBody Book buch) {
         return bookServiceImpl.buchSpeichern(buch);
     }
-    
+
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping(value= "/readingListImport")
     public void uploadReadingWishlist(@RequestPart MultipartFile file, Principal principal) {
