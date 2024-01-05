@@ -107,6 +107,55 @@ public class BookServiceImpl implements BookService {
         return defaultURL;
     }
 
+    private String scanneDetailseite(String tid) {
+        try {
+            String suchUrl = "https://www.buecherhallen.de/suchergebnis-detail/medium/" + tid + ".html";
+            URL url = new URL(suchUrl);
+
+            Scanner scanner = new Scanner(url.openStream());
+            StringBuilder stringBuilder = new StringBuilder();
+            while (scanner.hasNext()) {
+                stringBuilder.append(scanner.next());
+            }
+            return stringBuilder.toString();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+
+    public String findeRegalStandort(String tid) {
+        String regalStandort = "";
+
+        String website = scanneDetailseite(tid);
+
+        Pattern kategoriePattern = Pattern.compile(">[\\w\\sÄÖÜ]*&gt; [\\wäöü]*<");
+        assert website != null;
+        Matcher kategorieMatcher = kategoriePattern.matcher(website);
+        if (kategorieMatcher.find()) {
+            String rawKategorie = kategorieMatcher.group(1);
+            Pattern einzelKategoriePattern = Pattern.compile("[\\w\\sÄÖÜäöü]+");
+            Matcher einzelKategorieMatcher = einzelKategoriePattern.matcher(rawKategorie);
+            if (einzelKategorieMatcher.find()) {
+                regalStandort = einzelKategorieMatcher.group(1) + "-" + einzelKategorieMatcher.group(3);
+            }
+        }
+
+        Pattern signaturPattern = Pattern.compile("item-value\">[\\w\\säöü]*</span>\\s*</li>\\s*</ul>");
+        Matcher signaturMatcher = signaturPattern.matcher(website);
+        if (signaturMatcher.find()) {
+            String rawSignatur = signaturMatcher.group(1);
+            Pattern extractSignaturPattern = Pattern.compile("[\\w\\säöü]+");
+            Matcher extractSignaturMatcher = extractSignaturPattern.matcher(rawSignatur);
+            if (extractSignaturMatcher.find()) {
+                regalStandort = regalStandort + "\t" + extractSignaturMatcher.group(1);
+            }
+        }
+
+        return regalStandort;
+    }
+
     @Override
     public String wandeleInTIDUm(String isbn) {
         try{
@@ -137,27 +186,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean istVerfuegbar(String gesuchteTID, String standort) {
-        try{
-            String urlBasis = "https://www.buecherhallen.de/suchergebnis-detail/medium/";
-            String urlBuch = urlBasis + gesuchteTID + ".html";
-            URL url = new URL(urlBuch);
-            String website;
 
-            Scanner scanner = new Scanner(url.openStream());
-            StringBuilder stringBuilder = new StringBuilder();
-            while(scanner.hasNext()) {
-                stringBuilder.append(scanner.next());
-            }
-            website = stringBuilder.toString();
+        String website = scanneDetailseite(gesuchteTID);
 
-            Pattern pattern = Pattern.compile("<.*location\">" + standort + "<[^>]*>[^VN]*Verfügbar.*");
-            Matcher matcher = pattern.matcher(website);
+        Pattern pattern = Pattern.compile("<.*location\">" + standort + "<[^>]*>[^VN]*Verfügbar.*");
+        assert website != null;
+        Matcher matcher = pattern.matcher(website);
 
-            return matcher.find();
-        } catch (Exception e){
-            System.out.println(e);
-        }
-       return false;
+        return matcher.find();
     }
 
 
