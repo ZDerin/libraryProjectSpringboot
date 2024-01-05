@@ -1,16 +1,19 @@
 package libraryProjectGroup.libraryProject.standorte;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table
+@Table(name="standort")
 public class Standort {
-    private String name;
 
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name="name")
+    private String name;
+
 
     public Standort() {
     }
@@ -19,11 +22,11 @@ public class Standort {
         this.name = name;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 }
