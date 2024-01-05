@@ -167,6 +167,8 @@ public class BookServiceImpl implements BookService {
                 .filter(bookFromRepo -> (bookFromRepo.getIsbns().equals(book.getIsbns())) && (bookFromRepo.getUser() == book.getUser())).toList();
         return !booksWithIsbnInRepo.isEmpty();
     }
+
+
     @Override
     public void extractAndSaveBookData(MultipartFile file, User user) {
         List<String> listOfBookList = convertCsvToStr(file);
@@ -205,6 +207,8 @@ public class BookServiceImpl implements BookService {
             book.setTitle(eachBookInArr[1]);
             book.setAuthor(eachBookInArr[2]);
 
+
+            // keine einzelne ISBN!
             if(!findByIsbnAndUser(book) && !isbnListe.isEmpty() && !tidsListe.isEmpty()){
                 bookRepository.save(book);
             }
