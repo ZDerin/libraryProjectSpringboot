@@ -164,12 +164,30 @@ public class BookServiceImpl implements BookService {
         return matcher.find();
     }
 
-
+/*
     @Override
     public boolean findByIsbnAndUser(Book book) {
         List<Book> booksWithIsbnInRepo = bookRepository.findAll().stream()
                 .filter(bookFromRepo -> (bookFromRepo.getIsbns().equals(book.getIsbns())) && (bookFromRepo.getUser() == book.getUser())).toList();
         return !booksWithIsbnInRepo.isEmpty();
+    }*/
+
+    @Override
+    public boolean findByIsbnAndUser(Book book) {
+        List<Book> allBooksInRepo = bookRepository.findAll();
+
+        for(Book bookFromRepo : allBooksInRepo){
+            List<String> isbnsOfBookFromRepo = bookFromRepo.getIsbns().stream().toList();
+            for(String isbn : isbnsOfBookFromRepo){
+                if(book.getIsbns().contains(isbn) && (bookFromRepo.getUser() == book.getUser())){
+                    return true;
+                }
+            }
+        }
+        return false;
+                //
+        // .filter(bookFromRepo -> (bookFromRepo.getIsbns().stream().toList().contains(book.getIsbns())) && (bookFromRepo.getUser() == book.getUser())).toList();
+        //return !booksWithIsbnInRepo.isEmpty();
     }
 
 
@@ -350,4 +368,7 @@ public class BookServiceImpl implements BookService {
        return null;
     }
 
+    public void removeTheBook(BookRemoveDto book, User user) {
+        bookRepository.deleteById(book.getBookId());
+    }
 }

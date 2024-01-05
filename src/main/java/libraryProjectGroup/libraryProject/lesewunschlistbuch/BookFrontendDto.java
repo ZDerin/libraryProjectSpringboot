@@ -6,6 +6,8 @@ public class BookFrontendDto {
     private String title;
     private String author;
 
+    private int bookId;
+
     private String standortLink;
 
     public String getStandortLink() {
@@ -15,6 +17,7 @@ public class BookFrontendDto {
     public void setStandortLink(String standortLink) {
         this.standortLink = standortLink;
     }
+
 
     public String getCoverbild() {
         return coverbild;
@@ -38,5 +41,13 @@ public class BookFrontendDto {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 }

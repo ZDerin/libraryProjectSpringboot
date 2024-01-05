@@ -34,7 +34,6 @@ public class BookController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping(value= "/readingListImport")
     public void uploadReadingWishlist(@RequestPart MultipartFile file, Principal principal) {
-        System.out.println(file.getContentType());
         User user = userRepository.findByUsername(principal.getName());
         bookServiceImpl.extractAndSaveBookData(file, user);
     }
@@ -43,8 +42,15 @@ public class BookController {
     @PostMapping(value= "/addBookToRead")
     @ResponseStatus(HttpStatus.CREATED)
     public void addBookToWishlist(@RequestBody BookCreationDto book, Principal principal) {
-        System.out.println("in addBookToWishList");
         User user = userRepository.findByUsername(principal.getName());
         bookServiceImpl.saveBookToReadingWishlist(book, user);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PostMapping(value= "/deleteBook")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void removeTheBook(@RequestBody BookRemoveDto book, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        bookServiceImpl.removeTheBook(book, user);
     }
 }

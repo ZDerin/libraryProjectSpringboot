@@ -68,6 +68,10 @@ public class Book {
         this.coverbild = coverbild;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }

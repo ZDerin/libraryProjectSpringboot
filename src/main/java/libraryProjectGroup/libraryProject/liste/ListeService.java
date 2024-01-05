@@ -56,6 +56,7 @@ public class ListeService {
                         dto.setTitle(buch.getTitle());
                         dto.setAuthor(buch.getAuthor());
                         dto.setCoverbild(buch.getCoverbild());
+                        dto.setBookId(buch.getId());
                         dto.setStandortLink("https://www.buecherhallen.de/suchergebnis-detail/medium/" + tid + ".html");
                         standortListe.add(dto);
                         break;
@@ -75,6 +76,7 @@ public class ListeService {
             dto.setTitle(book.getTitle());
             dto.setAuthor(book.getAuthor());
             dto.setCoverbild(book.getCoverbild());
+            dto.setBookId(book.getId());
             allBooksAsDto.add(dto);
         }
         return allBooksAsDto;
