@@ -41,7 +41,6 @@ public class AuthController {
             @RequestParam String password
     ) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        //UUID userId = userRepository.findByUsername(username).getId();??
         if (bCryptPasswordEncoder.matches(password, userDetails.getPassword())) {
             String roles = userDetails.getAuthorities().stream()
                     .map(Object::toString)
