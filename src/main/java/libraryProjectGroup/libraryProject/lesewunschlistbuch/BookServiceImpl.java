@@ -212,8 +212,9 @@ public class BookServiceImpl implements BookService {
 
             if(!isbnMatchList.isEmpty()){
                 int indexOfFirst9ofFirstIsbn = isbnMatchList.get(0).indexOf('9');
+                isbnMatch= isbnMatchList.get(0);
                 System.out.println(isbnMatchList.get(0));
-                isbn13VonCsv = isbnMatch.substring(indexOfFirst9ofFirstIsbn);
+                isbn13VonCsv = isbnMatch.substring(indexOfFirst9ofFirstIsbn, indexOfFirst9ofFirstIsbn+13);
                 isbnListe.add(isbn13VonCsv);
             }
 
@@ -247,6 +248,7 @@ public class BookServiceImpl implements BookService {
 
         Set<String> tidsListe = generateTids(isbnListe);
 
+        book.setCoverbild(erstelleCoverbildLink(isbnListe));
         book.setUser(user);
         book.setIsbns(isbnListe);
         book.setTids(tidsListe);
