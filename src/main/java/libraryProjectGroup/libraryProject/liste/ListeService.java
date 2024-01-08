@@ -20,8 +20,18 @@ public class ListeService {
     // soll eine Liste übergeben, in der die am gewählten Standort verfügbaren Bucher
     // mit ihren Daten (Link zum Cover, Titel, Autor) aufgezählt sind
 
+
+     /*unnötig, weil als requestparam gut funktioniert
     //    private final NutzerService nutzerService;
-    private String standort;
+    //private String standort = "Zentralbibliothek";
+
+    /*public void setStandort(String standort) {
+        this.standort = standort;
+    }
+
+    public String getStandort() {
+        return standort;
+    }*/
 
     public ListeService(BookRepository bookRepository, BookServiceImpl bookService) {
         this.bookRepository = bookRepository;

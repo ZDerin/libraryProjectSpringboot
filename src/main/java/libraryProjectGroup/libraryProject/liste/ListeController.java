@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -20,7 +18,6 @@ import java.util.List;
 
 @RestController
 public class ListeController {
-
     private BookServiceImpl bookServiceImpl;
     private UserRepository userRepository;
 
@@ -37,10 +34,11 @@ public class ListeController {
 
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping(value= "/showAvailableBooks")
-    public List<BookFrontendDto> showBooksToRead(Principal principal){
+    public List<BookFrontendDto> showBooksToRead(@RequestParam String standort, Principal principal){
         User user = userRepository.findByUsername(principal.getName());
         List<Book> readingWishlist = bookServiceImpl.findAll(user);
-        List<BookFrontendDto> gefilterteWunschliste =  listeService.erstelleStandortListe(readingWishlist, "Zentralbibliothek");
+        System.out.println(standort);
+        List<BookFrontendDto> gefilterteWunschliste =  listeService.erstelleStandortListe(readingWishlist, standort);
         return gefilterteWunschliste;
     }
 
@@ -49,7 +47,6 @@ public class ListeController {
     public List<BookFrontendDto> showAllBooks(Principal principal){
         User user = userRepository.findByUsername(principal.getName());
         List<Book> readingWishlist = bookServiceImpl.findAll(user);
-        System.out.println(listeService.findAllAsDTO(readingWishlist).toString());
         return listeService.findAllAsDTO(readingWishlist);
     }
 
