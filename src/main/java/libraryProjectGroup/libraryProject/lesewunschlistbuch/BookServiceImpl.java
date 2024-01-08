@@ -87,7 +87,7 @@ public class BookServiceImpl implements BookService {
 //    }
     public String erstelleCoverbildLink(Set<String> isbnListe) {
         String hugendubel = null;
-        String defaultURL = "https://images.thalia.media/00/-/43a368e2355441ca9709657b2c6486b3/hardcover-notizbuch-urban-glam-ultra-liniert-paperblanks.jpeg";
+        String defaultURL = "../../assets/default-cover-text.png";
 
         for (String isbn : isbnListe) {
             hugendubel = "https://www.hugendubel.info/annotstream/" + isbn + "/COP";
