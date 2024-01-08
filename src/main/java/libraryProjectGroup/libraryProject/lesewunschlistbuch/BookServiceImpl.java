@@ -213,7 +213,6 @@ public class BookServiceImpl implements BookService {
             if(!isbnMatchList.isEmpty()){
                 int indexOfFirst9ofFirstIsbn = isbnMatchList.get(0).indexOf('9');
                 isbnMatch= isbnMatchList.get(0);
-                System.out.println(isbnMatchList.get(0));
                 isbn13VonCsv = isbnMatch.substring(indexOfFirst9ofFirstIsbn, indexOfFirst9ofFirstIsbn+13);
                 isbnListe.add(isbn13VonCsv);
             }
@@ -229,7 +228,6 @@ public class BookServiceImpl implements BookService {
             book.setTids(tidsListe);
             book.setTitle(eachBookInArr[1]);
             book.setAuthor(eachBookInArr[2]);
-
 
             // keine einzelne ISBN!
             if(!findByIsbnAndUser(book) && !isbnListe.isEmpty() && !tidsListe.isEmpty()){
@@ -277,11 +275,9 @@ public class BookServiceImpl implements BookService {
             for(List<String> s : data){
                 listOfBookList.addAll(s);
             }
-            return listOfBookList;
+            return listOfBookList.stream().filter(book -> book.contains("to-read")).toList();
         } catch (IOException e) {
-            System.out.println("in extractAndSaveBookData");
             System.out.println(e);
-           // e.printStackTrace(); // Handle the exception according to your needs
         }
         return null;
     }
@@ -311,8 +307,6 @@ public class BookServiceImpl implements BookService {
         return null;
     }
 
-
-    //private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static List<String> findAdditionalIsbns(String title, String author) {
         try{
