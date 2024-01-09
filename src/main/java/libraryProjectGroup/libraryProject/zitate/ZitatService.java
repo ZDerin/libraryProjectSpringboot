@@ -4,6 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ZitatService {
 
@@ -16,11 +18,7 @@ public class ZitatService {
     public Zitat getZufallsZitat() {
         long gesamtzahl = zitatRepository.count();
         int zufallszahl = (int)(Math.random() * gesamtzahl);
-        Page<Zitat> zitatPage = zitatRepository.findAll(new PageRequest(zufallszahl, 1));
-        Zitat zitat = null;
-        if (zitatPage.hasContent()) {
-            zitat = zitatPage.getContent().get(0);
-        }
-        return zitat;
+        Optional<Zitat> zitat = zitatRepository.findById(zufallszahl);
+        return zitat.orElse(null);
     }
 }
