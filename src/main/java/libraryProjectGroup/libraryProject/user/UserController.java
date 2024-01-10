@@ -31,8 +31,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UUID register(@RequestBody UserCreationDto dto) {
-        //try {
+    public Object register(@RequestBody UserCreationDto dto) {
+        try {
             User createdUser = userRepository.save(
                     new User(
                             UUID.randomUUID(),
@@ -43,10 +43,17 @@ public class UserController {
                     )
             );
             return createdUser.getId();
-        //}
-        //return null;
+        } catch (DataIntegrityViolationException ex) {
+            if (ex.getMessage().contains("nutzer_username_key")) {
+                return ex.getMessage();
+            } else if (ex.getMessage().contains("nutzer_email_key")) {
+                return ex.getMessage();
+            }
+        }
+        return null;
     }
 
+/*
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping()
     public List<String> findAll() {
@@ -62,7 +69,7 @@ public class UserController {
         userRepository.deleteById(id);
     }
 
-
+*/
 
 //    @PreAuthorize("hasAuthority('ROLE_SELLER')")
 //    @PutMapping()
