@@ -18,6 +18,7 @@ public class ZitatController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping(value = "/getZitat")
     public Zitat zeigeZufallsZitat() {
+        System.out.println("Methode im Controller");
         return zitatService.getZufallsZitat();
     }
 }

@@ -16,9 +16,11 @@ public class ZitatService {
     }
 
     public Zitat getZufallsZitat() {
+        System.out.println("Methode im Service gestartet");
         long gesamtzahl = zitatRepository.count();
         int zufallszahl = (int)(Math.random() * gesamtzahl);
         Optional<Zitat> zitat = zitatRepository.findById(zufallszahl);
+        System.out.println(zitat);
         return zitat.orElse(null);
     }
 }
